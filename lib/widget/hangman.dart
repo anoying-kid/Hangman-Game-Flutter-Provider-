@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class Hangman extends StatefulWidget {
-  final int loc;
-  const Hangman(this.loc, {super.key});
+  final int _hangmanPngLoc;
+  const Hangman(this._hangmanPngLoc, {super.key});
 
   @override
   State<Hangman> createState() => _HangmanState();
 }
 
 class _HangmanState extends State<Hangman> {
-  String hangmanPng() {
-    return 'assets/images/${widget.loc}.png';
+  String _hangmanPngPath() {
+    return 'assets/images/${widget._hangmanPngLoc}.png';
   }
 
   @override
@@ -21,7 +21,7 @@ class _HangmanState extends State<Hangman> {
       width: double.infinity,
       child: Center(
         child: Image.asset(
-          hangmanPng(),
+          _hangmanPngPath(),
           color: Colors.black,
         ),
       ),

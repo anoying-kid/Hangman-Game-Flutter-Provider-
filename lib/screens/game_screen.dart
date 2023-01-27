@@ -17,80 +17,78 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  int playerLifes = 1;
-  int hangmanPngLoc = 0;
-  String word = WordGenerator().randomNoun();
-  late String dashWord = '_' * word.length;
-  bool showAnswer = false;
+  int _playerLifes = 3;
+  int _hangmanPngLoc = 0;
+  String _word = WordGenerator().randomNoun();
+  late String _dashWord = '_' * _word.length;
+  bool _showAnswer = false;
 
-  void restartGame({bool livesEnded = false, bool roundEnded = false}) {
+  void _restartGame({bool livesEnded = false, bool roundEnded = false}) {
     if (livesEnded) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         setState(() {
-          playerLifes = 3;
+          _playerLifes = 3;
         });
       });
     }
-    word = WordGenerator().randomNoun();
-    dashWord = '_' * word.length;
-    hangmanPngLoc = 0;
+    _word = WordGenerator().randomNoun();
+    _dashWord = '_' * _word.length;
+    _hangmanPngLoc = 0;
   }
 
-  void answer() {
+  void _answer() {
     setState(() {
-      showAnswer = true;
+      _showAnswer = true;
     });
     Future.delayed(const Duration(seconds: 1), (() {
       setState(() {
-        playerLifes -= 1;
-        showAnswer = false;
-        restartGame(roundEnded: true);
+        _playerLifes -= 1;
+        _showAnswer = false;
+        _restartGame(roundEnded: true);
       });
     }));
   }
 
-  void onSave(String newLetter) {
+  void _onSave(String newLetter) {
     bool isWordChanged = false;
     String newWord = '';
-    for (int i = 0; i < word.length; i++) {
-      if (dashWord[i] == '_' && word[i] == newLetter) {
+    for (int i = 0; i < _word.length; i++) {
+      if (_dashWord[i] == '_' && _word[i] == newLetter) {
         isWordChanged = true;
-        newWord += word[i];
+        newWord += _word[i];
       } else {
-        newWord += dashWord[i];
+        newWord += _dashWord[i];
       }
     }
 
     if (isWordChanged) {
-      dashWord = newWord;
+      _dashWord = newWord;
       setState(() {});
     } else {
-      hangmanPngLoc += 1;
+      _hangmanPngLoc += 1;
       setState(() {});
-      if (hangmanPngLoc == 6) {
-        answer();
+      if (_hangmanPngLoc == 6) {
+        _answer();
       }
     }
 
-    if (word == dashWord) {
-      answer();
+    if (_word == _dashWord) {
+      _answer();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (playerLifes == 0) {
-      Future.delayed(Duration(milliseconds: 100), () {
-        showDialog(context: context, builder: (_) => RestartGame())
+    if (_playerLifes == 0) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        showDialog(context: context, builder: (_) => const RestartGame())
             .then((value) {
           (value)
-              ? restartGame(livesEnded: true)
-              : restartGame(livesEnded: false);
+              ? _restartGame(livesEnded: true)
+              : _restartGame(livesEnded: false);
         });
       });
     }
-
-    print(playerLifes);
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -105,21 +103,20 @@ class _GameScreenState extends State<GameScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerDetails(playerLifes),
-              Hangman(hangmanPngLoc),
-              // DashLines(dashWord),
-              (showAnswer)
+              PlayerDetails(_playerLifes),
+              Hangman(_hangmanPngLoc),
+              (_showAnswer)
                   ? DashLines(
-                      word: word,
+                      word: _word,
                       showAnswer: true,
                     )
-                  : DashLines(word: dashWord),
-              (showAnswer)
+                  : DashLines(word: _dashWord),
+              (_showAnswer)
                   ? Keyboard(
-                      onSave: onSave,
-                      readOnly: showAnswer,
+                      onSave: _onSave,
+                      readOnly: _showAnswer,
                     )
-                  : Keyboard(onSave: onSave),
+                  : Keyboard(onSave: _onSave),
             ],
           ),
         ]));

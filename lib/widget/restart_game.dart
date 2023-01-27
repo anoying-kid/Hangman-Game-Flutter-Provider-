@@ -6,9 +6,9 @@ class RestartGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(),
+      shape: const RoundedRectangleBorder(),
       backgroundColor: Colors.deepPurple[400],
-      title: Text(
+      title: const Text(
         'Restart Game',
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.orange),
@@ -17,10 +17,9 @@ class RestartGame extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width * 0.3,
           height: 50.0,
-          // height: MediaQuery.of(context).size.width * 0.3,
-          padding: EdgeInsets.only(right: 5),
+          padding: const EdgeInsets.only(right: 5),
           child: FloatingActionButton(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10))),
             backgroundColor: Colors.orange,
             onPressed: () {
@@ -34,16 +33,14 @@ class RestartGame extends StatelessWidget {
         ),
         Container(
           width: MediaQuery.of(context).size.width * 0.3,
-          padding: EdgeInsets.only(left: 5),
+          padding: const EdgeInsets.only(left: 5),
           child: OutlinedButton(
-            // shape: StadiumBorder(),
-            // backgroundColor: Colors.transparent,
             style: OutlinedButton.styleFrom(
-                side: BorderSide(color: Colors.orange, width: 2)),
+                side: const BorderSide(color: Colors.orange, width: 2)),
             onPressed: () {
               Navigator.pop(context, false);
             },
-            child: Text(
+            child: const Text(
               'NO',
               style: TextStyle(color: Colors.orange),
             ),
