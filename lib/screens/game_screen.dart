@@ -26,6 +26,7 @@ class _GameScreenState extends State<GameScreen> {
   bool _showAnswer = false;
   int _hintsLeft = 3;
   final Set<String> _userWords = {};
+  int _userScore = 0;
 
   void _restartGame({bool livesEnded = false, bool roundEnded = false}) {
     if (livesEnded) {
@@ -40,6 +41,7 @@ class _GameScreenState extends State<GameScreen> {
     _dashWord = '_' * _word.length;
     _hangmanPngLoc = 0;
     _userWords.clear();
+    _userScore += 1;
   }
 
   void _answer() {
@@ -126,7 +128,7 @@ class _GameScreenState extends State<GameScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerDetails(_playerLifes, _hintsLeft, _showHintWord),
+              PlayerDetails(_playerLifes, _hintsLeft, _userScore, _showHintWord),
               Hangman(_hangmanPngLoc),
               (_showAnswer)
                   ? DashLines(

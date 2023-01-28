@@ -4,9 +4,11 @@ import 'package:flutter_svg/svg.dart';
 class PlayerDetails extends StatefulWidget {
   final int _playerLifes;
   final int _hintsLeft;
+  final int _playerScore;
   final Function _showHintWord;
 
-  const PlayerDetails(this._playerLifes, this._hintsLeft, this._showHintWord,
+  const PlayerDetails(
+      this._playerLifes, this._hintsLeft, this._playerScore, this._showHintWord,
       {super.key});
 
   @override
@@ -17,24 +19,24 @@ class _PlayerDetailsState extends State<PlayerDetails> {
   @override
   Widget build(BuildContext context) {
     // print(widget._playerLifes);
+    double phoneWidth = MediaQuery.of(context).size.width;
     return Container(
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black))),
         alignment: Alignment.centerLeft,
         height: MediaQuery.of(context).size.height * 0.1,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.fromLTRB(
-            20, MediaQuery.of(context).viewPadding.top + 5, 20, 5),
+        width: phoneWidth,
+        padding: EdgeInsets.all(phoneWidth * 0.03),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
+              width: phoneWidth * 0.4,
               child: Row(children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.2,
+                  width: phoneWidth * 0.2,
                   padding: const EdgeInsets.all(3),
                   child: Image.asset('assets/images/heart.png'),
                 ),
@@ -52,7 +54,8 @@ class _PlayerDetailsState extends State<PlayerDetails> {
             Container(
               height: double.infinity,
               padding: const EdgeInsets.all(5),
-              width: MediaQuery.of(context).size.width * 0.2,
+              width: MediaQuery.of(context).size.width * 0.25,
+              alignment: Alignment.centerLeft,
               child: FloatingActionButton(
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -72,6 +75,25 @@ class _PlayerDetailsState extends State<PlayerDetails> {
                 ),
               ),
             ),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.orange, width: 2),
+                  borderRadius: const BorderRadius.all(Radius.circular(10))),
+              width: MediaQuery.of(context).size.width * 0.25,
+              alignment: Alignment.center,
+              child: Text(
+                widget._playerScore.toString(),
+                overflow: TextOverflow.fade,
+                textAlign: TextAlign.right,
+                style: const TextStyle(fontSize: 25, shadows: [
+                  Shadow(
+                    offset: Offset(1.0, 1.0),
+                    blurRadius: 5.0,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                  ),
+                ]),
+              ),
+            )
           ],
         ));
   }
