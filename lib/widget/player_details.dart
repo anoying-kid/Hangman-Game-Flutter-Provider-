@@ -1,10 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class PlayerDetails extends StatefulWidget {
   final int _playerLifes;
-  const PlayerDetails(this._playerLifes, {super.key});
+  final int _hintsLeft;
+  final Function _showHintWord;
+
+  const PlayerDetails(this._playerLifes, this._hintsLeft, this._showHintWord,
+      {super.key});
 
   @override
   State<PlayerDetails> createState() => _PlayerDetailsState();
@@ -46,12 +49,29 @@ class _PlayerDetailsState extends State<PlayerDetails> {
                 ),
               ]),
             ),
-            SizedBox(
-                width: MediaQuery.of(context).size.width * 0.25,
-                child: IconButton(
-                    iconSize: 50,
-                    onPressed: () {},
-                    icon: SvgPicture.asset('assets/images/hint.svg'))),
+            Container(
+              height: double.infinity,
+              padding: EdgeInsets.all(5),
+              width: MediaQuery.of(context).size.width * 0.2,
+              child: FloatingActionButton(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                backgroundColor: Colors.orange[100],
+                onPressed: () {
+                  if (widget._hintsLeft != 0) widget._showHintWord();
+                },
+                child: Text(
+                  (widget._hintsLeft != 0)
+                      ? 'Hint\n+${widget._hintsLeft}'
+                      : 'No Hint',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+              ),
+            ),
           ],
         ));
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hangman_game_flutter/widget/dash_lines.dart';
 
@@ -22,11 +24,14 @@ class _GameScreenState extends State<GameScreen> {
   String _word = WordGenerator().randomNoun();
   late String _dashWord = '_' * _word.length;
   bool _showAnswer = false;
+  int _hintsLeft = 3;
+  Set<String> _userWords = {};
 
   void _restartGame({bool livesEnded = false, bool roundEnded = false}) {
     if (livesEnded) {
       Future.delayed(const Duration(seconds: 1), () {
         setState(() {
+          _hintsLeft = 3;
           _playerLifes = 3;
         });
       });
@@ -34,6 +39,7 @@ class _GameScreenState extends State<GameScreen> {
     _word = WordGenerator().randomNoun();
     _dashWord = '_' * _word.length;
     _hangmanPngLoc = 0;
+    _userWords.clear();
   }
 
   void _answer() {
@@ -42,7 +48,7 @@ class _GameScreenState extends State<GameScreen> {
     });
     Future.delayed(const Duration(seconds: 1), (() {
       setState(() {
-        _playerLifes -= 1;
+        if (_word != _dashWord) _playerLifes -= 1;
         _showAnswer = false;
         _restartGame(roundEnded: true);
       });
@@ -50,35 +56,52 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   void _onSave(String newLetter) {
-    bool isWordChanged = false;
-    String newWord = '';
-    for (int i = 0; i < _word.length; i++) {
-      if (_dashWord[i] == '_' && _word[i] == newLetter) {
-        isWordChanged = true;
-        newWord += _word[i];
-      } else {
-        newWord += _dashWord[i];
+    if (!_userWords.contains(newLetter)) {
+      _userWords.add(newLetter);
+      bool isWordChanged = false;
+      String newWord = '';
+      for (int i = 0; i < _word.length; i++) {
+        if (_dashWord[i] == '_' && _word[i] == newLetter) {
+          isWordChanged = true;
+          newWord += _word[i];
+        } else {
+          newWord += _dashWord[i];
+        }
       }
-    }
 
-    if (isWordChanged) {
-      _dashWord = newWord;
-      setState(() {});
-    } else {
-      _hangmanPngLoc += 1;
-      setState(() {});
-      if (_hangmanPngLoc == 6) {
+      if (isWordChanged) {
+        _dashWord = newWord;
+        setState(() {});
+      } else {
+        _hangmanPngLoc += 1;
+        setState(() {});
+        if (_hangmanPngLoc == 6) {
+          _answer();
+        }
+      }
+
+      if (_word == _dashWord) {
+        // print('this ran');
         _answer();
       }
+    } else {
+      // text word is used;
     }
+  }
 
-    if (_word == _dashWord) {
-      _answer();
+  void _showHintWord() {
+    int randomIndex = Random().nextInt(_word.length);
+    while (_userWords.contains(_word[randomIndex])) {
+      randomIndex = Random().nextInt(_word.length);
     }
+    _hintsLeft -= 1;
+    _onSave(_word[randomIndex]);
   }
 
   @override
   Widget build(BuildContext context) {
+    print(_word == _dashWord);
+    print(_word);
     if (_playerLifes == 0) {
       Future.delayed(const Duration(milliseconds: 100), () {
         showDialog(context: context, builder: (_) => const RestartGame())
@@ -103,7 +126,7 @@ class _GameScreenState extends State<GameScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerDetails(_playerLifes),
+              PlayerDetails(_playerLifes, _hintsLeft, _showHintWord),
               Hangman(_hangmanPngLoc),
               (_showAnswer)
                   ? DashLines(

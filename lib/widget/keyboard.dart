@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Keyboard extends StatefulWidget {
   final Function(String) onSave;
@@ -26,6 +27,7 @@ class _KeyboardState extends State<Keyboard> {
       width: MediaQuery.of(context).size.width / 6,
       height: MediaQuery.of(context).size.height * 0.45,
       child: TextField(
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[a-z]"))],
         readOnly: widget.readOnly,
         onEditingComplete: clearTextField,
         textInputAction: TextInputAction.done,
