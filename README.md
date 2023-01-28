@@ -9,7 +9,7 @@ This is fully hardcoded no additional libraries are used however for the generat
 It perfectly works with Android and Web (Tested). Not tested with the Ios and Macos.
 
 ## Interface
-![Inside](media/Hangman-Flutter.gif)
+<img src="media/Hangman-Flutter.gif" width="25%"/>
 
 Its easy to use.
 
