@@ -16,7 +16,7 @@ class PlayerDetails extends StatefulWidget {
 class _PlayerDetailsState extends State<PlayerDetails> {
   @override
   Widget build(BuildContext context) {
-    print(widget._playerLifes);
+    // print(widget._playerLifes);
     return Container(
         decoration: const BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black))),
@@ -51,7 +51,7 @@ class _PlayerDetailsState extends State<PlayerDetails> {
             ),
             Container(
               height: double.infinity,
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               width: MediaQuery.of(context).size.width * 0.2,
               child: FloatingActionButton(
                 shape: const RoundedRectangleBorder(
@@ -65,7 +65,7 @@ class _PlayerDetailsState extends State<PlayerDetails> {
                       ? 'Hint\n+${widget._hintsLeft}'
                       : 'No Hint',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.deepPurple,
                       fontWeight: FontWeight.bold,
                       fontSize: 20),

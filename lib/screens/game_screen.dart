@@ -25,7 +25,7 @@ class _GameScreenState extends State<GameScreen> {
   late String _dashWord = '_' * _word.length;
   bool _showAnswer = false;
   int _hintsLeft = 3;
-  Set<String> _userWords = {};
+  final Set<String> _userWords = {};
 
   void _restartGame({bool livesEnded = false, bool roundEnded = false}) {
     if (livesEnded) {
@@ -100,8 +100,8 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_word == _dashWord);
-    print(_word);
+    // print(_word == _dashWord);
+    // print(_word);
     if (_playerLifes == 0) {
       Future.delayed(const Duration(milliseconds: 100), () {
         showDialog(context: context, builder: (_) => const RestartGame())
