@@ -11,8 +11,10 @@ import 'package:hangman_game_flutter/widget/restart_game.dart';
 import 'package:word_generator/word_generator.dart';
 
 class GameScreen extends StatefulWidget {
+  final int _difficultyLevel;
   static const routeName = '/game-screen';
-  const GameScreen({super.key});
+  const GameScreen({super.key, required difficultyLevel})
+      : _difficultyLevel = difficultyLevel;
 
   @override
   State<GameScreen> createState() => _GameScreenState();
@@ -21,27 +23,52 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   int _playerLifes = 3;
   int _hangmanPngLoc = 0;
-  String _word = WordGenerator().randomNoun();
-  late String _dashWord = '_' * _word.length;
   bool _showAnswer = false;
   int _hintsLeft = 3;
   final Set<String> _userWords = {};
   int _userScore = 0;
+  late String _word;
+  late String _dashWord;
 
-  void _restartGame({bool livesEnded = false, bool roundEnded = false}) {
+  void _wordForDifficultyLevel(int difficultyLevel) {
+    String newWord = WordGenerator().randomNoun();
+    List wordLength;
+    if (difficultyLevel == 1) {
+      wordLength = [0, 5];
+    } else if (difficultyLevel == 2) {
+      wordLength = [5, 8];
+    } else {
+      wordLength = [8, 12];
+    }
+    while (newWord.contains('-') ||
+        newWord.length < wordLength[0] ||
+        newWord.length >= wordLength[1]) {
+      newWord = WordGenerator().randomNoun();
+    }
+    _word = newWord;
+    _dashWord = '_' * _word.length;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _wordForDifficultyLevel(widget._difficultyLevel);
+  }
+
+  void _restartGame({bool livesEnded = false}) {
     if (livesEnded) {
       Future.delayed(const Duration(seconds: 1), () {
         setState(() {
           _hintsLeft = 3;
           _playerLifes = 3;
+          _userScore = 0;
         });
       });
     }
-    _word = WordGenerator().randomNoun();
-    _dashWord = '_' * _word.length;
+
+    _wordForDifficultyLevel(widget._difficultyLevel);
     _hangmanPngLoc = 0;
     _userWords.clear();
-    _userScore += 1;
   }
 
   void _answer() {
@@ -50,9 +77,13 @@ class _GameScreenState extends State<GameScreen> {
     });
     Future.delayed(const Duration(seconds: 1), (() {
       setState(() {
-        if (_word != _dashWord) _playerLifes -= 1;
+        if (_word != _dashWord) {
+          _playerLifes -= 1;
+        } else {
+          _userScore += 1;
+        }
         _showAnswer = false;
-        _restartGame(roundEnded: true);
+        _restartGame();
       });
     }));
   }
@@ -102,15 +133,13 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print(_word == _dashWord);
-    // print(_word);
     if (_playerLifes == 0) {
       Future.delayed(const Duration(milliseconds: 100), () {
         showDialog(context: context, builder: (_) => const RestartGame())
             .then((value) {
           (value)
               ? _restartGame(livesEnded: true)
-              : _restartGame(livesEnded: false);
+              : Navigator.of(context).pop();
         });
       });
     }
@@ -128,7 +157,8 @@ class _GameScreenState extends State<GameScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerDetails(_playerLifes, _hintsLeft, _userScore, _showHintWord),
+              PlayerDetails(
+                  _playerLifes, _hintsLeft, _userScore, _showHintWord),
               Hangman(_hangmanPngLoc),
               (_showAnswer)
                   ? DashLines(
