@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:hangman_game_flutter/modal/difficulty.dart';
 import 'package:hangman_game_flutter/widget/dash_lines.dart';
 
 import 'package:hangman_game_flutter/widget/hangman.dart';
@@ -11,7 +12,7 @@ import 'package:hangman_game_flutter/widget/restart_game.dart';
 import 'package:word_generator/word_generator.dart';
 
 class GameScreen extends StatefulWidget {
-  final int _difficultyLevel;
+  final Difficulty _difficultyLevel;
   static const routeName = '/game-screen';
   const GameScreen({super.key, required difficultyLevel})
       : _difficultyLevel = difficultyLevel;
@@ -30,12 +31,12 @@ class _GameScreenState extends State<GameScreen> {
   late String _word;
   late String _dashWord;
 
-  void _wordForDifficultyLevel(int difficultyLevel) {
+  void _wordForDifficultyLevel(Difficulty difficultyLevel) {
     String newWord = WordGenerator().randomNoun();
     List wordLength;
-    if (difficultyLevel == 1) {
+    if (difficultyLevel == Difficulty.easy) {
       wordLength = [0, 5];
-    } else if (difficultyLevel == 2) {
+    } else if (difficultyLevel == Difficulty.medium) {
       wordLength = [5, 8];
     } else {
       wordLength = [8, 12];
