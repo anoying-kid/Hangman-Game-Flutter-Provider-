@@ -24,6 +24,7 @@ class RestartGame extends StatelessWidget {
             backgroundColor: Colors.orange,
             onPressed: () {
               Navigator.pop(context, true);
+              FocusScope.of(context).unfocus();
             },
             child: Text(
               'YES',
@@ -39,6 +40,7 @@ class RestartGame extends StatelessWidget {
                 side: const BorderSide(color: Colors.orange, width: 2)),
             onPressed: () {
               Navigator.pop(context, false);
+              FocusScope.of(context).previousFocus();
             },
             child: const Text(
               'NO',

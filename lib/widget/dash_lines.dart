@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hangman_game_flutter/provider/player_data.dart';
+import 'package:provider/provider.dart';
 
 class DashLines extends StatelessWidget {
-  final String _word;
-  final bool _showAnswer;
-  const DashLines({super.key, required word, showAnswer = false}) : _word = word , _showAnswer = showAnswer;
-
-  Color reqColor() {
-    if (_showAnswer) return Colors.green;
-    return Colors.black;
-  }
+  // Color reqColor() {
+  //   if (_showAnswer) return Colors.green;
+  //   return Colors.black;
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final String dashWord = _word.split('').join(' ');
+    final data = Provider.of<PlayerData>(context);
+    final String dashWord = data.dashWord.split('').join(' ');
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.12,
       width: double.infinity,
@@ -22,7 +21,7 @@ class DashLines extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             dashWord,
-            style: TextStyle(fontSize: 50, color: reqColor()),
+            style: TextStyle(fontSize: 50),
             overflow: TextOverflow.visible,
           )),
     );

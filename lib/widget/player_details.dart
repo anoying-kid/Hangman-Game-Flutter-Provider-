@@ -1,25 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hangman_game_flutter/provider/player_data.dart';
+import 'package:provider/provider.dart';
 
-class PlayerDetails extends StatefulWidget {
-  final int _playerLifes;
-  final int _hintsLeft;
-  final int _playerScore;
-  // final Function _showHintWord;
-  final String _showHintWord;
-
-  const PlayerDetails(
-      this._playerLifes, this._hintsLeft, this._playerScore, this._showHintWord,
-      {super.key});
-
-  @override
-  State<PlayerDetails> createState() => _PlayerDetailsState();
-}
-
-class _PlayerDetailsState extends State<PlayerDetails> {
+class PlayerDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // print(widget._playerLifes);
+    final data = Provider.of<PlayerData>(context, listen: false);
     double phoneWidth = MediaQuery.of(context).size.width;
     return Container(
         decoration: const BoxDecoration(
@@ -43,11 +30,11 @@ class _PlayerDetailsState extends State<PlayerDetails> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width *
-                      ((widget._playerLifes == 0) ? 0.2 : 0.13),
+                      ((data.playerLifes == 0) ? 0.2 : 0.13),
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.all(10),
                   child: SvgPicture.asset(
-                    'assets/images/lifes_number/${widget._playerLifes}.svg',
+                    'assets/images/lifes_number/${data.playerLifes}.svg',
                   ),
                 ),
               ]),
@@ -62,17 +49,21 @@ class _PlayerDetailsState extends State<PlayerDetails> {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 backgroundColor: Colors.orange[100],
                 onPressed: () {
-                  // if (widget._hintsLeft != 0) widget._showHintWord();
+                  if (data.hintsLeft != 0) {
+                    data.wantHint();
+                  }
                 },
-                child: Text(
-                  (widget._hintsLeft != 0)
-                      ? 'Hint\n+${widget._hintsLeft}'
-                      : 'No Hint',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      color: Colors.deepPurple,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                child: Consumer<PlayerData>(
+                  builder: (context, data, child) => Text(
+                    (data.hintsLeft != 0)
+                        ? 'Hint\n+${data.hintsLeft}'
+                        : 'No Hint',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                        color: Colors.deepPurple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                  ),
                 ),
               ),
             ),
@@ -83,7 +74,7 @@ class _PlayerDetailsState extends State<PlayerDetails> {
               width: MediaQuery.of(context).size.width * 0.25,
               alignment: Alignment.center,
               child: Text(
-                widget._playerScore.toString(),
+                data.userScore.toString(),
                 overflow: TextOverflow.fade,
                 textAlign: TextAlign.right,
                 style: const TextStyle(fontSize: 25, shadows: [

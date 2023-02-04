@@ -9,7 +9,7 @@ class LevelSelect extends StatelessWidget {
 
   void navigateToGameScreen(BuildContext context, Difficulty difficulty) {
     final data = Provider.of<PlayerData>(context, listen: false);
-    data.addDifficulty(difficulty);
+    data.addNewWord(difficulty);
     Navigator.of(context).pushNamed(GameScreen.routeName);
   }
 
