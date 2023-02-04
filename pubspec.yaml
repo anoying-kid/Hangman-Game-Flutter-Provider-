@@ -39,6 +39,7 @@ dependencies:
   word_generator: ^0.4.1
   pretty_textfield: ^0.0.1
   flutter_svg: ^1.1.6
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

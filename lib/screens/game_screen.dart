@@ -2,12 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hangman_game_flutter/modal/difficulty.dart';
+import 'package:hangman_game_flutter/provider/player_data.dart';
 import 'package:hangman_game_flutter/widget/dash_lines.dart';
 
 import 'package:hangman_game_flutter/widget/hangman.dart';
 import 'package:hangman_game_flutter/widget/keyboard.dart';
 import 'package:hangman_game_flutter/widget/player_details.dart';
 import 'package:hangman_game_flutter/widget/restart_game.dart';
+import 'package:provider/provider.dart';
 
 import 'package:word_generator/word_generator.dart';
 
@@ -134,7 +136,8 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_playerLifes == 0) {
+    final data = Provider.of<PlayerData>(context).data;
+    if (data['playerLifes'] == 0) {
       Future.delayed(const Duration(milliseconds: 100), () {
         showDialog(context: context, builder: (_) => const RestartGame())
             .then((value) {
@@ -158,19 +161,18 @@ class _GameScreenState extends State<GameScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerDetails(
-                  _playerLifes, _hintsLeft, _userScore, _showHintWord),
+              PlayerDetails(data['playerLifes'], data['hintsLeft'], data['userScore'], _showHintWord),
               Hangman(_hangmanPngLoc),
-              (_showAnswer)
+              (data['showAnswer'])
                   ? DashLines(
-                      word: _word,
+                      word: data['word'],
                       showAnswer: true,
                     )
                   : DashLines(word: _dashWord),
-              (_showAnswer)
+              (data['showAnswer'])
                   ? Keyboard(
                       onSave: _onSave,
-                      readOnly: _showAnswer,
+                      readOnly: true,
                     )
                   : Keyboard(onSave: _onSave),
             ],

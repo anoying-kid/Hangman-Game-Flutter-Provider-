@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:hangman_game_flutter/modal/difficulty.dart';
+import 'package:hangman_game_flutter/provider/player_data.dart';
 
 import 'package:hangman_game_flutter/screens/game_screen.dart';
 import 'package:hangman_game_flutter/screens/level_select_screen.dart';
+import 'package:provider/provider.dart';
 
 main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +18,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const LevelSelect(),
-      routes: {GameScreen.routeName: (context) => GameScreen(difficultyLevel: ModalRoute.of(context)!.settings.arguments as Difficulty,)},
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => PlayerData(difficulty: ModalRoute.of(context)!.settings.arguments as Difficulty))
+      ],
+      child: MaterialApp(
+        home: const LevelSelect(),
+        routes: {GameScreen.routeName: (context) => GameScreen(difficultyLevel: ModalRoute.of(context)!.settings.arguments as Difficulty,)},
+      ),
     );
   }
 }

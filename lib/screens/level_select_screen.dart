@@ -34,7 +34,6 @@ class LevelSelect extends StatelessWidget {
         child: SizedBox(
           height: widgetHeight,
           width: widgetWidth,
-          // color: Colors.amber,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
