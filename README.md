@@ -9,7 +9,11 @@ This is fully hardcoded no additional libraries are used however for the generat
 It perfectly works with Android and Web (Tested). Not tested with the Ios and Macos.
 
 ## Interface
-<img src="media/Hangman-Flutter.gif" width="25%"/>
+<p>
+    <img src="screenshots/level_select.png" width="25%"/>
+    <img src="screenshots/game_screen.png" width="25%"/>
+    <img src="screenshots/game_ended.png" width="25%"/>
+</p>
 
 Its easy to use.
 
