@@ -20,7 +20,7 @@ class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<PlayerData>(context);
-    print(data.data);
+    // print(data.data);
     // if (data['playerLifes'] == 0) {
     //   Future.delayed(const Duration(milliseconds: 100), () {
     //     showDialog(context: context, builder: (_) => const RestartGame())
@@ -45,11 +45,11 @@ class GameScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              PlayerDetails(data.data['playerLifes'], data.data['hintsLeft'],
-                  data.data['userScore'], ''),
-              Hangman(data.data['hangmanPngLoc']),
-              DashLines(word: data.data['word']),
-              Keyboard(onSave: '')
+              PlayerDetails(data.playerLifes, data.hintsLeft,
+                  data.userScore, ''),
+              Hangman(data.hangmanPngLoc),
+              DashLines(word: data.dashWord),
+              Keyboard()
             ],
           ),
         ]));

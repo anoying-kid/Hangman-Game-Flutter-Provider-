@@ -4,19 +4,29 @@ import 'package:hangman_game_flutter/modal/difficulty.dart';
 import 'package:word_generator/word_generator.dart';
 
 class PlayerData with ChangeNotifier {
-  static String _word = '';
-  static String _dashWord = '';
+  Difficulty _difficulty = Difficulty.easy;
+  int playerLifes = 3;
+  int hangmanPngLoc = 0;
+  bool showAnswer = false;
+  int hintsLeft = 3;
+  int userScore = 0;
+  String word = '';
+  String dashWord = '';
+  bool isRoundEnded = true;
+  Set<String> playerLetters = {};
 
-  Map<String, dynamic> _data = {
-    'playerLifes': 3,
-    'hangmanPngLoc': 0,
-    'showAnswer': false,
-    'hintsLeft': 3,
-    'userScore': 0,
-    'word': _word,
-    'dashWord': _dashWord,
-    'isRoundEnded': true,
-  };
+  // static Map<String, dynamic> _data = {
+  //   'playerLifes': 3,
+  //   'hangmanPngLoc': 0,
+  //   'showAnswer': false,
+  //   'hintsLeft': 3,
+  //   'userScore': 0,
+  //   'word': '',
+  //   'dashWord': '',
+  //   'isRoundEnded': true,
+  //   'playerLetters': <String>{},
+  // };
+
 
   void addDifficulty(Difficulty difficulty) {
     String newWord = WordGenerator().randomNoun();
@@ -33,13 +43,32 @@ class PlayerData with ChangeNotifier {
         newWord.length >= wordLength[1]) {
       newWord = WordGenerator().randomNoun();
     }
-    _data['word'] = newWord;
-    _data['dashWord'] = '_' * newWord.length;
+    word = newWord;
+    dashWord = '_' * newWord.length;
     // _data['isRoundEnded'] = false;
     // notifyListeners();
   }
 
-  Map<String, dynamic> get data {
-    return {..._data};
+  // Map<String, dynamic> get data {
+  //   return {..._data};
+  // }
+
+  void addNewLetter(String newLetter){
+    playerLetters.add(newLetter);
+    // print('this is gay');
+    // print(_data);
+    notifyListeners();
+  }
+  void changeDashWord(String newWord) {
+    dashWord = newWord;
+    notifyListeners();
+  }
+  void newBodyPart() {
+    hangmanPngLoc +=1;
+    notifyListeners();
+  }
+  void roundClear() {
+    userScore += 1;
+    hangmanPngLoc = 0;
   }
 }

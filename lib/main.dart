@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
-import 'package:hangman_game_flutter/modal/difficulty.dart';
+
 import 'package:hangman_game_flutter/provider/player_data.dart';
 
 import 'package:hangman_game_flutter/screens/game_screen.dart';
