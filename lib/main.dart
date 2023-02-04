@@ -20,11 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => PlayerData(difficulty: ModalRoute.of(context)!.settings.arguments as Difficulty))
+        ChangeNotifierProvider(create: (context) => PlayerData())
       ],
       child: MaterialApp(
         home: const LevelSelect(),
-        routes: {GameScreen.routeName: (context) => GameScreen(difficultyLevel: ModalRoute.of(context)!.settings.arguments as Difficulty,)},
+        routes: {GameScreen.routeName: (context) => GameScreen()},
       ),
     );
   }

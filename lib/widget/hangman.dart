@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Hangman extends StatefulWidget {
+class Hangman extends StatelessWidget {
   final int _hangmanPngLoc;
   const Hangman(this._hangmanPngLoc, {super.key});
 
-  @override
-  State<Hangman> createState() => _HangmanState();
-}
-
-class _HangmanState extends State<Hangman> {
   String _hangmanPngPath() {
-    return 'assets/images/${widget._hangmanPngLoc}.png';
+    return 'assets/images/$_hangmanPngLoc.png';
   }
 
   @override

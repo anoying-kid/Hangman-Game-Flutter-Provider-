@@ -5,7 +5,8 @@ class PlayerDetails extends StatefulWidget {
   final int _playerLifes;
   final int _hintsLeft;
   final int _playerScore;
-  final Function _showHintWord;
+  // final Function _showHintWord;
+  final String _showHintWord;
 
   const PlayerDetails(
       this._playerLifes, this._hintsLeft, this._playerScore, this._showHintWord,
@@ -61,7 +62,7 @@ class _PlayerDetailsState extends State<PlayerDetails> {
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 backgroundColor: Colors.orange[100],
                 onPressed: () {
-                  if (widget._hintsLeft != 0) widget._showHintWord();
+                  // if (widget._hintsLeft != 0) widget._showHintWord();
                 },
                 child: Text(
                   (widget._hintsLeft != 0)

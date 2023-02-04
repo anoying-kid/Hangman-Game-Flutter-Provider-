@@ -4,20 +4,26 @@ import 'package:hangman_game_flutter/modal/difficulty.dart';
 import 'package:word_generator/word_generator.dart';
 
 class PlayerData with ChangeNotifier {
-  final Difficulty difficulty;
-  static String word = '';
-  static String dashWord = '';
+  static String _word = '';
+  static String _dashWord = '';
 
-  PlayerData({required this.difficulty}) {
-    _wordForDifficultyLevel(difficulty);
-  }
+  Map<String, dynamic> _data = {
+    'playerLifes': 3,
+    'hangmanPngLoc': 0,
+    'showAnswer': false,
+    'hintsLeft': 3,
+    'userScore': 0,
+    'word': _word,
+    'dashWord': _dashWord,
+    'isRoundEnded': true,
+  };
 
-  void _wordForDifficultyLevel(Difficulty difficultyLevel) {
+  void addDifficulty(Difficulty difficulty) {
     String newWord = WordGenerator().randomNoun();
     List wordLength;
-    if (difficultyLevel == Difficulty.easy) {
+    if (difficulty == Difficulty.easy) {
       wordLength = [0, 5];
-    } else if (difficultyLevel == Difficulty.medium) {
+    } else if (difficulty == Difficulty.medium) {
       wordLength = [5, 8];
     } else {
       wordLength = [8, 12];
@@ -27,19 +33,11 @@ class PlayerData with ChangeNotifier {
         newWord.length >= wordLength[1]) {
       newWord = WordGenerator().randomNoun();
     }
-    word = newWord;
-    dashWord = '_' * word.length;
+    _data['word'] = newWord;
+    _data['dashWord'] = '_' * newWord.length;
+    // _data['isRoundEnded'] = false;
+    // notifyListeners();
   }
-
-  Map<String, dynamic> _data = {
-    'playerLifes': 3,
-    'hangmanPngLoc': 0,
-    'showAnswer': false,
-    'hintsLeft': 3,
-    'userScore': 0,
-    'word': word,
-    'dashword': dashWord,
-  };
 
   Map<String, dynamic> get data {
     return {..._data};
