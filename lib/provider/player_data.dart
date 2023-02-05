@@ -7,13 +7,14 @@ import 'package:word_generator/word_generator.dart';
 
 class PlayerData with ChangeNotifier {
   Difficulty _difficulty = Difficulty.easy;
-  int playerLifes = 3;
+  int playerLifes = 1;
   int hangmanPngLoc = 0;
   int hintsLeft = 3;
   int userScore = 0;
   String word = '';
   String dashWord = '';
   Set<String> playerLetters = {};
+  bool showAnswer = false;
 
   void addNewWord(Difficulty difficulty) {
     String newWord = WordGenerator().randomNoun();
@@ -32,8 +33,6 @@ class PlayerData with ChangeNotifier {
     }
     word = newWord;
     dashWord = '_' * newWord.length;
-    // _data['isRoundEnded'] = false;
-    // notifyListeners();
   }
 
   void addNewLetter(String newLetter) {
@@ -55,19 +54,21 @@ class PlayerData with ChangeNotifier {
   }
 
   void roundLose() {
+    showAnswer = false;
     playerLifes -= 1;
     hangmanPngLoc = 0;
     playerLetters.clear();
     addNewWord(_difficulty);
   }
 
-  void restartGame() {
+  void restartGame({bool ummNotify = false}) {
     playerLifes = 3;
     hangmanPngLoc = 0;
     hintsLeft = 3;
     userScore = 0;
     playerLetters.clear();
     addNewWord(_difficulty);
+    if (ummNotify) notifyListeners();
   }
 
   void gameLogic(String newLetter) {
@@ -87,8 +88,8 @@ class PlayerData with ChangeNotifier {
         changeDashWord(newWord);
       } else {
         newBodyPart();
-        if (hangmanPngLoc == 5) {
-          roundLose();
+        if (hangmanPngLoc == 6) {
+          showAnswer = true;
         }
       }
     }

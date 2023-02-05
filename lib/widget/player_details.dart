@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hangman_game_flutter/provider/player_data.dart';
+import 'package:hangman_game_flutter/widget/restart_game.dart';
 import 'package:provider/provider.dart';
 
 class PlayerDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<PlayerData>(context, listen: false);
+    final data = Provider.of<PlayerData>(context);
+    if (data.playerLifes == 0) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        showDialog(context: context, builder: (_) => const RestartGame())
+            .then((value) {
+          (value)
+              ? data.restartGame(ummNotify: true)
+              : Navigator.of(context).pop();
+        });
+      });
+    }
     double phoneWidth = MediaQuery.of(context).size.width;
     return Container(
         decoration: const BoxDecoration(
@@ -53,8 +64,7 @@ class PlayerDetails extends StatelessWidget {
                     data.wantHint();
                   }
                 },
-                child: Consumer<PlayerData>(
-                  builder: (context, data, child) => Text(
+                child: Text(
                     (data.hintsLeft != 0)
                         ? 'Hint\n+${data.hintsLeft}'
                         : 'No Hint',
@@ -66,7 +76,6 @@ class PlayerDetails extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
             Container(
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.orange, width: 2),
